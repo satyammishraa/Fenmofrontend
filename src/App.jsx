@@ -3,9 +3,6 @@ import { getExpenses } from "./api/expenseApi";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
 import Filters from "./components/Filters";
-const [darkMode, setDarkMode] = useState(
-  localStorage.getItem("theme") === "dark"
-);
 
 function App() {
   const [expenses, setExpenses] = useState([]);
@@ -13,6 +10,11 @@ function App() {
   const [sort, setSort] = useState("date_desc");
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  // ✅ ADD THIS (Missing in your code)
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
 
   const fetchExpenses = async () => {
     try {
@@ -31,47 +33,44 @@ function App() {
     fetchExpenses();
   }, [category, sort]);
 
-useEffect(() => {
-  if (darkMode) {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-  }
-}, [darkMode]);
-
-
-
+  // ✅ Dark mode effect
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 p-6 transition-colors duration-300">
-
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
-       <div className="mb-8 flex justify-between items-center">
-  <div>
-    <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
-      Expense Dashboard
-    </h1>
-    <p className="text-gray-500 dark:text-gray-400 mt-2">
-      Track, filter and manage your spending efficiently.
-    </p>
-  </div>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+              Expense Dashboard
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">
+              Track, filter and manage your spending efficiently.
+            </p>
+          </div>
 
-  <button
-    onClick={() => setDarkMode(!darkMode)}
-    className="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white transition"
-  >
-    {darkMode ? "☀ Light" : "🌙 Dark"}
-  </button>
-</div>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white transition"
+          >
+            {darkMode ? "☀ Light" : "🌙 Dark"}
+          </button>
+        </div>
 
         {/* Summary Card */}
-        <div className="bg-white shadow-xl rounded-2xl p-6 mb-6 flex justify-between items-center">
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 mb-6 flex justify-between items-center">
           <div>
-            <p className="text-gray-500">Total Expenses</p>
+            <p className="text-gray-500 dark:text-gray-400">Total Expenses</p>
             <h2 className="text-3xl font-bold text-indigo-600">
               ₹{total}
             </h2>
@@ -82,12 +81,12 @@ useEffect(() => {
         </div>
 
         {/* Expense Form */}
-        <div className="bg-white shadow-lg rounded-2xl p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 mb-6">
           <ExpenseForm onSuccess={fetchExpenses} />
         </div>
 
         {/* Filters */}
-        <div className="bg-white shadow-lg rounded-2xl p-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-4 mb-6">
           <Filters
             category={category}
             setCategory={setCategory}
@@ -99,14 +98,15 @@ useEffect(() => {
         {/* Expense List */}
         <div className="space-y-4">
           {loading ? (
-            <p className="text-center text-gray-500">Loading...</p>
+            <p className="text-center text-gray-500 dark:text-gray-400">
+              Loading...
+            </p>
           ) : expenses.length === 0 ? (
-            <div className="bg-white p-6 rounded-2xl shadow text-center text-gray-400">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow text-center text-gray-400">
               No expenses yet. Add your first expense 🚀
             </div>
           ) : (
-           <ExpenseList expenses={expenses} refresh={fetchExpenses} />
-
+            <ExpenseList expenses={expenses} refresh={fetchExpenses} />
           )}
         </div>
 
