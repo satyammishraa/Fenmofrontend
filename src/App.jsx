@@ -17,17 +17,22 @@ function App() {
   );
 
   const fetchExpenses = async () => {
-    try {
-      setLoading(true);
-      const res = await getExpenses({ category, sort });
-      setExpenses(res.data.data);
-      setTotal(res.data.total);
-    } catch (err) {
-      console.error("Error fetching expenses");
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    const res = await getExpenses({ category, sort });
+
+    console.log("API response:", res.data);
+
+    setExpenses(res.data?.data || []);
+    setTotal(res.data?.total || 0);
+  } catch (err) {
+    console.error("Error fetching expenses", err);
+    setExpenses([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchExpenses();
