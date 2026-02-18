@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000"   // 🔥 hardcoded temporarily
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    "https://fenmobackend.onrender.com"
 });
 
 export const createExpense = (data) => API.post("/expenses", data);
