@@ -105,7 +105,8 @@ useEffect(() => {
               No expenses yet. Add your first expense 🚀
             </div>
           ) : (
-            <ExpenseList expenses={expenses} />
+           <ExpenseList expenses={expenses} refresh={fetchExpenses} />
+
           )}
         </div>
 
