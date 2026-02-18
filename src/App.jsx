@@ -3,6 +3,9 @@ import { getExpenses } from "./api/expenseApi";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
 import Filters from "./components/Filters";
+const [darkMode, setDarkMode] = useState(
+  localStorage.getItem("theme") === "dark"
+);
 
 function App() {
   const [expenses, setExpenses] = useState([]);
@@ -28,19 +31,41 @@ function App() {
     fetchExpenses();
   }, [category, sort]);
 
+useEffect(() => {
+  if (darkMode) {
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  }
+}, [darkMode]);
+
+
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 p-6">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">
-            Expense Dashboard
-          </h1>
-          <p className="text-gray-500 mt-2">
-            Track, filter and manage your spending efficiently.
-          </p>
-        </div>
+       <div className="mb-8 flex justify-between items-center">
+  <div>
+    <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+      Expense Dashboard
+    </h1>
+    <p className="text-gray-500 dark:text-gray-400 mt-2">
+      Track, filter and manage your spending efficiently.
+    </p>
+  </div>
+
+  <button
+    onClick={() => setDarkMode(!darkMode)}
+    className="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white transition"
+  >
+    {darkMode ? "☀ Light" : "🌙 Dark"}
+  </button>
+</div>
 
         {/* Summary Card */}
         <div className="bg-white shadow-xl rounded-2xl p-6 mb-6 flex justify-between items-center">
