@@ -26,7 +26,11 @@ function App() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Expense Tracker</h1>
+      {/* <h1>Expense Tracker</h1> */}
+      <h1 className="text-4xl font-bold text-blue-600">
+  Expense Tracker
+</h1>
+
 
       <ExpenseForm onSuccess={fetchExpenses} />
 
